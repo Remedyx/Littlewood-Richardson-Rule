@@ -1,0 +1,228 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+%\usepackage[enableskew]{youngtab} %project specific package
+\usepackage{ytableau}
+
+\newtheorem{lem}{Lemma}
+\newtheorem{thm}{Theorem}
+\newtheorem{prop}{Proposition}
+\newtheorem{cor}{Corollary}
+\newtheorem{defn}{Definition}
+\newtheorem{exe}{Exercise}
+\newtheorem{exmp}{Example}
+\newtheorem{rem}{Remark}
+
+\DeclareMathOperator{\wt}{wt}
+
+
+\title{Littlewood Richardson Rule}
+\author{Marco Bertenghi}
+\date{}
+
+\begin{document}
+
+\maketitle
+\section{Recap}
+\begin{enumerate}
+    \item We formulated the Littlewood-Richardson rule.
+    \begin{thm}[Littlewood-Richardson Rule] The LR coeff. $c_{\lambda, \mu}^\nu$ is equal to the number of Littlewood-Richardson tableux of skev-shape $\nu/\mu$ and weight $\lambda$.
+    \end{thm}
+    \item We defined tableau switching and derived an expression for Littlewood-Richardson coefficients in terms of jeu de taquin.
+    \begin{thm} If the skew shape $\chi$ represents $\lambda* \mu$, then the Littlewood-Richardson coefficient $c_{ \lambda, \mu}^\nu$ equals $\#$SST$( \chi)^{\triangleright C}$ for any $C \in $SST($\nu$).  
+    \end{thm}
+    \item Today we define coplactic operations, first on words, then on tableaux. Then we establish our main theorem, which implies the Littlewood-Richardson rule. 
+    \begin{thm} SST($\chi)^{ \triangleright 1_\nu} = $LR$( \chi, \nu)$. 
+    \end{thm}
+\end{enumerate}
+\section{Coplactic operations}
+In this section we shall introduce another kind of operations on skew semistandard
+tableaux, which we shall call \textit{coplactic operations}. Unlike jeu de taquin, these
+transformations \textbf{do not change the shape of a tableau}, but rather its \textbf{weight}, by
+changing the value of \textbf{one} of the entries.
+\\
+The basic definitions can be formulated
+most easily in terms of finite words over the alphabet $[n]= \{i \in \mathbb{N}: i < n\}$ where $n \in \mathbb{N}$,  hence we study that first. 
+\subsection{Coplactic operations on words}
+We first fix some terminology pertaining to words.
+\begin{defn} A \textbf{word} $w$ over a set $A$ (called the \textbf{alphabet}) is a finite \textit{(possibly empty)} sequence of elements of $A$, arranged from left to right. The elements of the sequence forming a word $w$ are called the \textbf{letters} of $w$. The set of all words of length $l$ over $A$ is denoted by $A^{l}$ , and we set $A^{*}:=\bigcup_{l\in N}A^{l}$ (i.e. words of arbitrary length).
+\end{defn}
+\begin{defn}
+Let $u,v \in A^*$ be two words. We define the \textbf{concatenation} of $u,v \in A^*$, denoted by $uv$ as the sequence of the letters of $u$ followed by the sequence of letters of $v$.  Clearly this defines an associative product on $A^*$. Whenever we can write a word $w$ as $uv$, then $u$ is called a \textbf{prefix} of $w$, and $v$ is called a \textbf{suffix} of $w$. A \textbf{subword} of $w$ is any word that can be obtained by removing from $w$ a (possibly empty) prefix and a suffix. 
+\end{defn}
+We now work towards a more specialized situation where $A=[n]$ for a $n \in \mathbb{N}$.
+\begin{defn}
+For words $w \in [n]^*$, we define the weight $wt(w) \in \mathbb{N}^n$ by setting $\wt(w)_i$ to count the number of letters $i$ in $w$. A word $w \in [n]^*$ will be called \textbf{dominant} for fixed $i \in [n-1]$, if every prefix $u$ of $w$ satisfies 
+\begin{align}
+    \wt(u)_i \geq \wt(u)_{i+1},
+\end{align}
+that is, every prefix $u$ of $w$ contains at least as many letters $i$ as letters $i+ 1$;
+and it will be called \textbf{anti-dominant} for (fixed) $i$ if every suffix $v$ of $w$ satisfies \begin{align}
+    ( \wt(v))_i \leq (\wt(v))_{i+1}. 
+\end{align}
+If $w$ is both dominant and anti-dominant for $i$, it will be called \textbf{neutral} for $i$. If a word $w \in [n]^*$ is  dominant for all $i \in [n-1]$ it will simply be called \textbf{dominant}.
+\end{defn}
+\begin{rem}
+Removing from any word a subword that is neutral for $i$ does not affect whether it is dominant, anti-dominant,  or neutral for $i$. This is clear, because neutrality of a word for $i$ means that the word has the same occurence of the latter $i$ as of the letter $i+1$. 
+\end{rem}
+\begin{exmp}
+Consider $A=[n=6]=\{0,1,2,3,4,5\}$, then two arbitrary words $w_1,w_2$ might have the form 
+\begin{align*}
+    w_1 &= 0,1,2,2,3,1,6. \\
+    w_2 &= 1,2,3,4.
+\end{align*}
+The letters of $w_1$ are $0,1,2,3,6$ whereas the letters of $w_2$ are $1,2,3,4$. We have the concatenation $w:=w_1w_2=0,1,2,2,3,1,6,1,2,3,4$ with prefix $w_1$ and suffix $w_2$ (but there are of course more prefixes and suffixes). Furthermore we have 
+\begin{align*}
+    \wt(w_1)&=(1,2,2,1,0,0,1) \\
+    \wt(w_2)&=(0,1,1,1,1,0,0)
+\end{align*}
+The word $w_2$ has the following 3 suffixes, $u_1=1$, $u_2=1,2$ and $u_3=1,2,3$ with weights 
+\begin{align*}
+    \wt(u_1)=(0,1,0,0,0,0), \ \wt(u_2)=(0,1,1,0,0,0), \ \wt(u_3)=(0,1,1,1,0,0).
+\end{align*}
+Hence we see that $w_2$ is not dominant, because it is not $0$ dominant, however it is $i=1,2,3,4$ dominant
+\end{exmp}
+Next we state a mildy useful lemma:
+\begin{lem}
+Assume a word $w \in [n]^*$ is dominant or anti-dominant for $i \in [n-1]$, then $w$ is neutral for $i$ if and only if $\wt(w)_i = \wt(w)_{i+1}$ (i.e. as many occurrences of the letter $i$ as of the letter $i+1$ in the word $w$). 
+\end{lem}
+\begin{proof}
+"$\implies$" If $w$ is neutral for $i$ then it is both dominant and anti-dominant for $i$ and we choose as a suffix $u=w$ (assume $v$ to be empty) to get $(\wt(w))_i \geq (\wt(w))_{i+1}$ and then $v=w$ as a suffix (assume $u$ to be empty) to get $( \wt(w))_i \leq (\wt(w))_{i+1}$. 
+\\\\
+"$\Longleftarrow$" Assume that $\wt(w)_i = \wt(w)_{i+1}$ and $w$ is also dominant for $i$, i.e. for all prefixes $u$ of $w$ we have $\wt(u)_i \geq \wt(u)_{i+1}$. Since in the whole word $w$ there are as many instances of the letter $i$ as of the letter $i+1$ and for all prefixes $u$ of $w$ we have $\wt(u)_i \geq \wt(u)_{i+1}$, this forces $\wt(v)_i \leq \wt(v)_{i+1}$ for all suffices $v$ of $w$. Indeed, assume for contradiction that there exists a suffix $v^*$ with $\wt(v^*)_i > \wt(v^*)_{i+1}$, that is, $v^*$ has more letters $i$ than $i+1$, if $v^*=w$ this is a contradiction. Else $w=uv^*$ and $u$ is prefix, in particular it has at least as many letters $i$ as letters $i+1$, but then evidently $uv^*$ has more occurrences of $i$ than of $i+1$ which is a contradiction to $\wt(w)_i=\wt(uv^*)_i=\wt(w)_{i+1}$.
+\end{proof}
+\begin{rem}
+We observe the similarity with $0$-dominance for semistandard tableaux, as characterized in the previous talk; this is what motivated our choice of terminology.
+\end{rem}
+The sequence of weights of successive prefixes of dominant word $w$ forms a standard Young tableau, from which $w$ can be readily reconstructed. We will formulate this as the following Proposition:
+\begin{prop}
+The set of dominant words $w \in [n]^d$ of weight $\lambda \in \mathcal{P}_{d,n}$ is in bijection with ST$(\lambda)$, associating $w$ to the sequence of weights of its prefixes. 
+\end{prop}
+\begin{defn}
+A coplactic operation in $[n]^*$ is a transition between words $w=uiv$ and $w'=u(i+1)v$, where $i \in [n-1]$ (incrementing the letter $i$ in $w$ by $1$), $u,v \in [n]^*$, and $u$ is anti-dominant for $i$ while $v$ is dominant for $i$. We denote this by $w=e_i(w')$ (decrementing) and $w'=f_i(w)$ (incrementing). 
+\end{defn}
+\begin{exmp}
+Consider the following word over the alphabet $[6]$,
+\begin{align}
+ \underline{4},0,1,5,2,\overline{\underline{1}},3,\underline{5},0,1,\overline{4},2,\overline{0},0,1,2,\overline{3},3,4.
+\end{align}
+Decrementing by 1 (i.e. view word above as $w'$)
+any one of the numbers with an underline, or incrementing (i.e. view word above as $w$) by 1 any one of the
+numbers with an overline, constitutes a coplactic operation.
+\end{exmp}
+\begin{prop}
+The expression $e_i(w)$ is defined unless $w$ is dominant for $i$, and $f_i(w)$ is defined unless $w$ is anti-dominant for $i$.
+\end{prop}
+\begin{proof}
+We shall prove the latter statement,  the proof of the former being analogous. Let $u$ be the longest prefix of $w$ that is anti-dominant for $i$; clearly $f_i(w)=w'$ cannot be defined if $u=w$. Otherwise $w=uiv$ for some suffix $v$, and we show by induction on its length that $v$ is dominant for $i$, which will prove the proposition. \\
+\\
+If the length is zero, then $v$ is empty and there is nothing to prove. Assume that for a fixed length $l \geq 1$ $v$ is dominant for $i$. If the last letter of $v$, say $j$, is different from $i+1$ then the assertion is also is trivial because $v=\widetilde{v}j$ and $\widetilde{v}$ is dominant for $i$ (by induction hypothesis), so both suffixes of $v$, namely $\widetilde{v}$ and $\widetilde{v}j$ are dominant for $i$.\\
+\\
+Hence assume $v=v'(i+1)$ and suppose for contradiction that $v$ is not dominant for $i$ while (again by induction hypothesis) $v'$ is. Since $v$ is not dominant for $i$ there exists a prefix $\widetilde{u}$ of $v$ that satisfies $\wt(\widetilde{u})_i < \wt(\widetilde{u})_{i+1}$, but since $v'$ is assumed to be dominant the only possible such suffix is $v$ itself. Thus 
+\begin{align*}
+  \wt(v')_{i+1} \overset{\text{Dom}}\leq  \wt(v')_i = \wt(v'(i+1))_i < \wt(v'(i+1))_{i+1} = \wt(v')_{i+1}+1 \\
+  \implies \wt(v')_{i+1} \leq \wt(v')_i < \wt(v')_{i+1}+1,
+\end{align*} which entails that $\wt(v')_i = \wt(v')_{i+1}$ and thus by the previous Lemma $v'$ is neutral for $i$.
+\\\\
+Hence $w=uiv'(i+1)$ is anti-dominant for $i$ since $ui(i+1)$ is, where we used that we can remove the neutral (sub)word $v'$ from $w$ and conserve that it is anti-dominant for $i$. This is a contradiction to our assumption that $u$ is the longest prefix of $w$ that is anti-dominant for $i$. Hence $v$ is dominant for $i$ and we're done. 
+\end{proof}
+If $w= e_i(w')$, i.e. if $w'=u(i+1)v$ is transitioned into $w=uiv$, then naturally we have $\wt(w) > \wt(w')$. Therefore the $e_i$ are called \textbf{raising operations}, and the $f_i$ are called \textbf{lowering operations}. Starting with any word $w \in [n]^*$ one can iterate application of a fixed $e_i$ until, after a finite number of iterations, $w$ is transformed into a word that is dominant for $i$. More generally, any sequence of applications of operations $e_i$, where $i$ is allowed to vary, must eventually terminate, producing a dominant word. 
+\newpage
+\section{Coplactic operations on tableaux}
+As mentioned, our interest in coplactic operations is in applying them to tableaux rather than to words. We shall discuss and prove the following properties which are quite remarkable:
+\begin{itemize}
+    \item When coplactic operations are applied to the word read off a tableau, modifying its entries in place, the tableau conditions are preserved; this regardless of which valid reading order is used, and despite the loss of information about rows and columns of the skew diagram caused by the reading process.
+\end{itemize}
+We now first give the definition of valid reading orders for $\chi \in \mathcal{S}$. Recall that $\mathcal{S}$ denotes the set of skew shapes. A skew shape is pair of partitions $(\lambda, \mu)$ such that $Y( \lambda)$ contains $Y(\mu)$, it is denoted by $\chi = \lambda/ \mu$. The set of all semi - standard skew tableaux $T$ of shape $\chi = \lambda / \mu$ and entries in $[n]$ is denoted SST$(\chi, n).$ A tableau is called semi - standard if the
+entries increase weakly $(\leq$) in each row and strongly $(<)$ down each column.
+\begin{defn}
+A \textbf{valid reading order} for $\chi \in \mathcal{S}$ is a total ordering $\leq_r$ on $Y( \chi)$, such that $(i,j) \leq_r (i',j')$ whenever $i \leq i'$ and $j \geq j'$. \\
+A \textbf{corresponding map} $w_r: SST( \chi , n) \to [n]^*$ is defined by 
+\begin{align*}
+    w_r(T) = T_{s_0}, \dots ,   T_{s_k},
+\end{align*}
+where $Y( \chi)= \{ s_0, \dots , s_k\}$ with $s_0 <_r \dots <_r s_k$. In other words, $w_r$ forms a list of all entries of $T$, in increasing order for $\leq_r$ of their squares. 
+\end{defn}
+\begin{exmp}
+Let $\chi = (5,5,4,4,2)/(3,1)$ be a skew shape. Then 
+\begin{align*}
+Y( \chi ) = \begin{ytableau}
+\none & \none & \none  &  & s_0 \\
+\none &  &  &  &  \\
+ &  &  &  \\
+ &  &  &  \\
+&  
+\end{ytableau}
+\implies \text{SST}( \chi, 6) \ni  T= \begin{ytableau}
+\none & \none & \none  & 0 & 1 \\
+\none & 0 & 1 & 1 & 3 \\
+0 & 2 & 2 & 3 \\
+1 & 4 & 4 & 5 \\
+3& 5 
+\end{ytableau}
+\end{align*}
+a valid reading order is defined on $Y( \chi)$ (the grid) but for readability purposes we work with the SST($\chi,6$). Two valid reading orders for SST($\chi,6$) would be: 
+\begin{itemize}
+    \item \textbf{Semitic}: $w_s(T)=1,0,3,1,1,0,3,2,2,0,5,4,4,1,5,3.$ Here we read row by row (top to bottom) from the right to the left. That is, here we would define $(i,j) \leq_s (i',j') : \iff i=i'$ and $j'\leq j-1$, then indeed we have $s_0=(0,4) \leq_s (0,3)=s_1$.
+    \item \textbf{Kanji}: $w_k(T)=1,3,0,1,3,5,1,2,4,0,2,4,5,0,1,3.$ Here we read column by column (right to left) from the top to the bottom. 
+\end{itemize}
+\end{exmp}
+Now let $c$ be a coplactic operation that can be applied to $w_r(T)$ (this is a word and thus well defined), say $w_r(T)=uiv$ and $c(w_r(T))=ui'v$ with $i,i' \in [n]$ and $i \neq i'$. If the length of $u$ is $l$, then the square $s_l$ (in above enumerating from previous definition) is called the \textbf{variable square for the application of $c$ to $T$.} In other words (since we start enumeration from $0$) $s_l$ contains the copy of the letter $i$ that is changed by $c$.
+\begin{defn}
+If replacing $i$ in square $s_l$ of $T \in \text{SST}(\chi,n)$ by $i'$ results in a new tableau $U \in $SST$( \chi ,n)$ (in particular same shape as $T$), then we define $c(T, \leq_r):=U$, so that $w_r(c(T, \leq_r)) = c(w_r(T))$. 
+\end{defn}
+The next theorem then is quite remarkable, it gives us a condition for when $c(T, \leq_r)= U$ exists and moreover it tells us that the value of $c(T, \leq_r)$ does not depend on the actual reading order $\leq_r$.
+\begin{thm}
+Let $\chi \in \mathcal{S}$, let $T \in $SST($\chi,n)$ and let $c$ be a coplactic operation $e_i$ or $f_i$ with $i \in [n-1]$. Then for any valid reading order $\leq_r$, the tableau $c(T, \leq_r)$ is defined if and only if $c(w_r(T))$ is; moreover, this condition and the value of $c(T, \leq_r)$ do not depend on $\leq_r$ (i.e. the reading order). 
+\end{thm}
+\begin{proof}
+See  A.A. van Leeuwen Proposition 3.2.1.
+\end{proof}
+\begin{rem}
+The theorem then states that the changes to the entries caused by the coplactic operations $e_i$ or $f_i$ are themselves independent of the reading order, i.e., the same entry is affected, at whatever place in the word the reading order places it. In other words, the loss of information about rows and columns of the skew diagram caused by the reading process has no impact. 
+\end{rem}
+\begin{defn}
+Let $T \in $SST($\chi,n)$. The coplactic operations $e_i$ and $f_i$ (for $i < n$) are (partially) defined by $e_i(T):= e_i(T, \leq_r)$ and $f_i(T):= f_i(T, \leq_r)$ for an arbitrary valid reading order $\leq_r$; this is taken to mean also that the left hand sides are undefined whenever the corresponding right hand sides are. 
+\end{defn}
+We give an example related to the previous Theorem. 
+\begin{exmp}
+Let us consider the same setup as in the previous example
+\begin{align*}
+    T= \begin{ytableau}
+\none & \none & \none  & 0 & \overline{1} \\
+\none & \overline{0} & 1 & 1 & 3 \\
+0 & 2 & \overline{2} & \underline{3} \\
+1 & 4 & \overline{4} & \underline{5} \\
+\overline{3} & 5 
+\end{ytableau}
+\end{align*}
+Where the (possible) coplactic operations are again displayed by overlines (incrementing by $1$) and underlines (decrementing by $1$). We again take the two valid reading orders:
+\begin{itemize}
+    \item \textbf{Semitic}: $w_s(T)=1,0,3,1,1,0,3,2,2,0,5,4,4,1,5,3.$
+    \item \textbf{Kanji}: $w_k(T)=1,3,0,1,3,5,1,2,4,0,2,4,5,0,1,3.$
+\end{itemize}
+The theorem then establishes, that no matter which reading order $\leq_r$ we choose, we will always end up with the same tableau:
+\begin{align*}
+    \begin{ytableau}
+\none & \none & \none  & 0 & 2 \\
+\none & 1 & 1 & 1 & 3 \\
+0 & 2 & 3 & 3 \\
+1 & 4 & 5 & 4 \\
+4 & 5 
+\end{ytableau}
+\end{align*}
+\end{exmp}
+\begin{defn}
+We call $T\in$ SST($\chi)$ dominant if $w_r(T)$ is dominant for any( and hence for every) valid reading order.
+\end{defn}
+\begin{cor}
+For any $\chi \in \mathcal{S}$, the subset of dominant elements of SST($\chi)$ is equal to LR$(\chi)$.
+\end{cor}
+\begin{proof}
+Follows from Propositon 1.4.3.
+\end{proof}
+\end{document}
